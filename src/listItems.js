@@ -22,6 +22,8 @@ import SendIcon from '@material-ui/icons/Send';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import StarBorder from '@material-ui/icons/StarBorder';
+import Divider from '@material-ui/core/Divider';
+import { EmojiFoodBeverage } from '@material-ui/icons';
 
 
 
@@ -81,56 +83,158 @@ export default function CheckboxList() {
   );
 }
 
-
-export function NestedList() {
+export function NestedList(props) {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
 
   const handleClick = () => {
     setOpen(!open);
   };
 
   return (
-    <List
-      component="nav"
-      aria-labelledby="nested-list-subheader"
-      subheader={
-        <ListSubheader component="div" id="nested-list-subheader">
-          Nested List Items
-        </ListSubheader>
-      }
-      className={classes.root}
-    >
-      <ListItem button>
-        <ListItemIcon>
-          <SendIcon />
-        </ListItemIcon>
-        <ListItemText primary="Sent mail" />
-      </ListItem>
-      <ListItem button>
-        <ListItemIcon>
-          <DraftsIcon />
-        </ListItemIcon>
-        <ListItemText primary="Drafts" />
-      </ListItem>
+    <List>
       <ListItem button onClick={handleClick}>
         <ListItemIcon>
           <InboxIcon />
         </ListItemIcon>
-        <ListItemText primary="Inbox" />
+        <ListItemText primary= {props.name} />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <ListItem button className={classes.nested}>
-            <ListItemIcon>
-              <StarBorder />
-            </ListItemIcon>
             <CheckboxList />
           </ListItem>
         </List>
       </Collapse>
     </List>
+  );
+}
+
+export class SelectedList extends React.Component{
+  constructor(props){
+    super(props);
+    this.handleListItemClick = this.handleListItemClick.bind(this);
+    this.state={
+      ingredients: [
+        {index: 1, name: "Meat"}, {index: 2, name: "Vegetables"},
+        {index: 3, name: "Dairy"}, {index: 4, name: "Carbohydrates"},
+        {index: 5, name: "Seafood"}, {index: 6, name: "Fruits"},
+        {index: 7, name: "Condiments/Spices"}
+      ],
+      selectedIndex: 0
+    }
+  }
+  handleListItemClick(index){
+    this.setState({selectedIndex:index});
+  }
+  renderIngredients(){
+    return this.state.ingredients.map(el => {
+      return (<ListItem button 
+        key={el.index}
+        selected = {this.state.selectedIndex===el.index} 
+        onClick = {index => this.handleListItemClick(el.index)}>
+          <NestedList name = {el.name}/>
+        </ListItem>)
+
+    })
+  }
+  render(){
+    const {classes}=this.props;
+    return(
+      <div>
+      <List
+        component="nav"
+        aria-labelledby="nested-list-subheader"
+        subheader={
+          <ListSubheader component="div" id="nested-list-subheader">
+            Ingredients
+          </ListSubheader>
+        }
+      >
+        {this.renderIngredients()}
+        </List>
+        </div>
+    )
+  }
+}
+
+export function SelectedListItem() {
+  const classes = useStyles();
+  const ingredients = [
+    {index: 0, name: "Meat"}, {index: 1, name: "Vegetables"},
+    {index: 2, name: "Dairy"}, {index: 3, name: "Carbohydrates"},
+    {index: 4, name: "Seafood"}, {index: 5, name: "Fruits"},
+    {index: 6, name: "Condiments/Spices"}
+  ]
+  const [selectedIndex, setSelectedIndex] = React.useState(1);
+
+  const handleListItemClick = (event, index) => {
+    setSelectedIndex(index);
+  };
+
+  // function renderIngredients(){
+  //   Object.entries(ingred).map(([index,food]) => {
+  //     return (
+  //       <ListItem button
+  //       selected = {selectedIndex === index}
+  //       onClick = {(event)=>handleListItemClick(event, index)}>
+  //         <NestedList name = {food}/>
+  //       </ListItem>
+  //     )
+  //   })
+  // }
+  const renderIngredients = () => {
+    ingredients.map(el => { return <ListItem primaryText={el.name} key = {el.index}/>})
+  }
+
+  return (
+    <div className={classes.root}>
+      <List
+        component="nav"
+        aria-labelledby="nested-list-subheader"
+        subheader={
+          <ListSubheader component="div" id="nested-list-subheader">
+            Ingredients
+          </ListSubheader>
+        }
+        className={classes.root}
+      >
+        {/* <ListItem button ></ListItem> */}
+        {renderIngredients}
+        {/* <ListItem
+          button
+          selected={selectedIndex === 0}
+          onClick={(event) => handleListItemClick(event, 0)}
+        >
+          <NestedList name="Meats"/>
+        </ListItem>
+        <ListItem
+          button
+          selected={selectedIndex === 1}
+          onClick={(event) => handleListItemClick(event, 1)}
+        >
+          <NestedList name="Vegetables"/>
+        </ListItem> */}
+      </List>
+      <Divider />
+      <List component="nav" aria-label="secondary mailbox folder">
+        <ListItem
+          button
+          selected={selectedIndex === 2}
+          onClick={(event) => handleListItemClick(event, 2)}
+        >
+          <ListItemText primary="Trash" />
+        </ListItem>
+        <ListItem
+          button
+          selected={selectedIndex === 3}
+          onClick={(event) => handleListItemClick(event, 3)}
+        >
+          <ListItemText primary="Spam" />
+        </ListItem>
+      </List>
+    </div>
   );
 }
   
