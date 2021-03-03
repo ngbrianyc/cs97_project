@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import App from './components/search-bar';
+import App from './components/App.js';
 
 //import reportWebVitals from './reportWebVitals';
 
