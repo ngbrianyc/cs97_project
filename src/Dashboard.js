@@ -1,28 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
-import Box from '@material-ui/core/Box';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { SelectedList, secondaryListItems, NestedList, SelectedListItem } from './listItems';
+import { SelectedList, IngredientResults } from './listItems';
 
-import Chart from './Chart';
-import Deposits from './Deposits';
-import Orders from './Orders';
 
 function Copyright() {
   return (
@@ -121,12 +114,33 @@ const useStyles = makeStyles((theme) => ({
 export default function Dashboard() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+  const [ingredientsArray, setIngredients] = React.useState( [ //have the object hold an array, holding t/f values, which is changed by handlechange
+    {index: 0, name: "Meat", chk: [false, false, false, false]}, {index: 1, name: "Vegetables", chk: [false, false, false, false]},
+    {index: 2, name: "Dairy", chk:[false,false,false,false]}, {index: 3, name: "Carbohydrates", chk: [false, false, false, false]},
+    {index: 4, name: "Seafood", chk: [false, false, false, false]}, {index: 5, name: "Fruits", chk: [false, false, false, false]},
+    {index: 6, name: "Condiments/Spices", chk: [false, false, false, false]}
+  ])
+  //make array of ingredients, then fill (set no) of sub-ingredients as false, then pass as prop
+  //define the update checkbox function here
+  //handle checkbox click here
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
   const handleDrawerClose = () => {
     setOpen(false);
   };
+  const handleCheckClick = (value, array) => () =>{
+    const ingredients = ingredientsArray
+    console.log(ingredients)
+    const chkArray = array
+    console.log(chkArray)
+    chkArray[value] = !(chkArray[value])
+    setIngredients({ingredients})
+  }
+  useEffect(()=>{
+    console.log("index changed!: ")
+  }, [ingredientsArray])
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   return (
@@ -166,36 +180,35 @@ export default function Dashboard() {
           </IconButton>
         </div>
         <Divider />
-        <SelectedList/>
+        <SelectedList ingredientsArray = {ingredientsArray}
+         handleCheckClick = {handleCheckClick} />
         <Divider />
-        <List>{secondaryListItems}</List>
       </Drawer>
       <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
+        <div className={classes.appBarSpacer} /> 
         <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
+          <IngredientResults ingredientsArray = {ingredientsArray} />
             {/* Chart */}
-            <Grid item xs={12} md={8} lg={9}>
+            {/* <Grid item xs={12} md={8} lg={9}>
               <Paper className={fixedHeightPaper}>
                 <Chart />
               </Paper>
-            </Grid>
+            </Grid> */}
             {/* Recent Deposits */}
-            <Grid item xs={12} md={4} lg={3}>
+            {/* <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper}>
                 <Deposits />
               </Paper>
-            </Grid>
+            </Grid> */}
             {/* Recent Orders */}
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <Paper className={classes.paper}>
                 <Orders />
               </Paper>
-            </Grid>
-          </Grid>
-          <Box pt={4}>
+            </Grid> */}
+          {/* <Box pt={4}>
             <Copyright />
-          </Box>
+          </Box> */}
         </Container>
       </main>
     </div>
