@@ -7,10 +7,7 @@ import App from './components/search-bar';
 //import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
-  <React.StrictMode>
-    {/* <App /> */}
-    <Dashboard />
-  </React.StrictMode>,
+    <Dashboard />,
   document.getElementById('root')
 );
 

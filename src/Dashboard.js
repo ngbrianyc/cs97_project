@@ -15,6 +15,9 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { SelectedList, IngredientResults } from './listItems';
+import Paper from '@material-ui/core/Paper'
+
+import RecipeForm from './Form.js'
 
 
 function Copyright() {
@@ -109,20 +112,23 @@ const useStyles = makeStyles((theme) => ({
   fixedHeight: {
     height: 240,
   },
+
+  pageContent:{
+    margin: theme.spacing(5),
+    padding: theme.spacing(3),
+  },
 }));
 
 export default function Dashboard() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
-  const [ingredientsArray, setIngredients] = React.useState( [ //have the object hold an array, holding t/f values, which is changed by handlechange
+  const [ingredientsArray, setIngredients] = React.useState( [ 
     {index: 0, name: "Meat", chk: [false, false, false, false]}, {index: 1, name: "Vegetables", chk: [false, false, false, false]},
     {index: 2, name: "Dairy", chk:[false,false,false,false]}, {index: 3, name: "Carbohydrates", chk: [false, false, false, false]},
     {index: 4, name: "Seafood", chk: [false, false, false, false]}, {index: 5, name: "Fruits", chk: [false, false, false, false]},
     {index: 6, name: "Condiments/Spices", chk: [false, false, false, false]}
   ])
-  //make array of ingredients, then fill (set no) of sub-ingredients as false, then pass as prop
-  //define the update checkbox function here
-  //handle checkbox click here
+
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -188,24 +194,9 @@ export default function Dashboard() {
         <div className={classes.appBarSpacer} /> 
         <Container maxWidth="lg" className={classes.container}>
           <IngredientResults ingredientsArray = {ingredientsArray} />
-            {/* Chart */}
-            {/* <Grid item xs={12} md={8} lg={9}>
-              <Paper className={fixedHeightPaper}>
-                <Chart />
-              </Paper>
-            </Grid> */}
-            {/* Recent Deposits */}
-            {/* <Grid item xs={12} md={4} lg={3}>
-              <Paper className={fixedHeightPaper}>
-                <Deposits />
-              </Paper>
-            </Grid> */}
-            {/* Recent Orders */}
-            {/* <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <Orders />
-              </Paper>
-            </Grid> */}
+          <Paper className = {classes.pageContent}>
+          <RecipeForm />
+          </Paper>
           {/* <Box pt={4}>
             <Copyright />
           </Box> */}
