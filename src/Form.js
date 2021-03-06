@@ -54,6 +54,18 @@ export default function RecipeForm() {
                         value = {fieldValues.steps}
                         onChange = {handleInputChange}
                     />
+                    <div>
+                        <Controls.Button
+                        color = "primary"
+                        size = "large"
+                        type = "Submit"
+                        text = "Submit"/>
+                        <Controls.Button
+                        color = "default"
+                        size = "large"
+                        type = "Rest"
+                        text = "Reset"/>
+                    </div>
                 </Grid>
                 <Grid item x4 = {4}></Grid>
             </Grid>

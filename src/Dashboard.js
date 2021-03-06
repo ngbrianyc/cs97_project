@@ -16,8 +16,11 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { SelectedList, IngredientResults } from './listItems';
 import Paper from '@material-ui/core/Paper'
+import AddIcon from '@material-ui/icons/Add';
 
+import Popup from './components/Popup'
 import RecipeForm from './Form.js'
+import { Button } from '@material-ui/core';
 
 
 function Copyright() {
@@ -128,6 +131,7 @@ export default function Dashboard() {
     {index: 4, name: "Seafood", chk: [false, false, false, false]}, {index: 5, name: "Fruits", chk: [false, false, false, false]},
     {index: 6, name: "Condiments/Spices", chk: [false, false, false, false]}
   ])
+  const [openPopup, setOpenPopup] = React.useState(false)
 
 
   const handleDrawerOpen = () => {
@@ -171,6 +175,18 @@ export default function Dashboard() {
               <NotificationsIcon />
             </Badge>
           </IconButton>
+          <Button color = "inherit" 
+          onClick={() =>setOpenPopup(true)}>
+            Add User Input Form
+            <AddIcon/>
+          </Button>
+          <Popup
+          title = "Recipe Form"
+          openPopup = {openPopup}
+          setOpenPopup = {setOpenPopup}
+          >
+            <RecipeForm />
+          </Popup>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -195,7 +211,7 @@ export default function Dashboard() {
         <Container maxWidth="lg" className={classes.container}>
           <IngredientResults ingredientsArray = {ingredientsArray} />
           <Paper className = {classes.pageContent}>
-          <RecipeForm />
+          
           </Paper>
           {/* <Box pt={4}>
             <Copyright />
